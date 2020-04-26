@@ -23,7 +23,7 @@
     <property name="patternMetrics">%d %-8r %m%n</property>
 </properties>
 <appenders>
-    <RollingFile name="custom-monitor-worker" immediateFlush="false"
+    <RollingFile name="custom-monitor-worker"
                  fileName="${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/custom-monitor-worker.log"
                  filePattern="${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/custom-monitor-worker.%i.gz">
         <PatternLayout>
