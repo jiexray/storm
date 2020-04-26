@@ -792,6 +792,7 @@
   (fn [] (exit-process! 1 "Worker died")))
 
 (defn -main [storm-id assignment-id port-str worker-id]
+  (org.apache.storm.custom-monitor/test-log)
   (let [conf (read-storm-config)]
     (setup-default-uncaught-exception-handler)
     (validate-distributed-mode! conf)

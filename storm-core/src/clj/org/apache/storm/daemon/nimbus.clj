@@ -2608,5 +2608,6 @@
     ))
 
 (defn -main []
+  (org.apache.storm.custom-monitor/test-log)
   (setup-default-uncaught-exception-handler)
   (-launch (standalone-nimbus)))
