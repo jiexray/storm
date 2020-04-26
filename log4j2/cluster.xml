@@ -21,6 +21,17 @@
     <property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %c{1.} %t [%p] %msg%n</property>
 </properties>
 <appenders>
+    <RollingFile name="custom-monitor" immediateFlush="false"
+                 fileName="${sys:storm.log.dir}/custom-monitor.log"
+                 filePattern="${sys:storm.log.dir}/custom-monitor.%i.gz">
+        <PatternLayout>
+            <pattern>${pattern}</pattern>
+        </PatternLayout>
+        <Policies>
+            <SizeBasedTriggeringPolicy size="100 MB"/> <!-- Or every 100 MB -->
+        </Policies>
+        <DefaultRolloverStrategy max="9"/>
+    </RollingFile>
     <RollingFile name="A1" immediateFlush="false"
                  fileName="${sys:storm.log.dir}/${sys:logfile.name}"
                  filePattern="${sys:storm.log.dir}/${sys:logfile.name}.%i.gz">
@@ -82,6 +93,9 @@
     </Logger>
     <Logger name="org.apache.storm.metric.LoggingClusterMetricsConsumer" level="info" additivity="false">
         <appender-ref ref="METRICS"/>
+    </Logger>
+    <Logger name="org.apache.storm.custom-monitor" level="info" additivity="false">
+        <appender-ref ref="custom-monitor"/>
     </Logger>
     <root level="info"> <!-- We log everything -->
         <appender-ref ref="A1"/>
