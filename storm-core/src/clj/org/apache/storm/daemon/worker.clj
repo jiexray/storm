@@ -19,7 +19,8 @@
   (:require [clj-time.core :as time])
   (:require [clj-time.coerce :as coerce])
   (:require [org.apache.storm.daemon [executor :as executor]])
-  (:require [org.apache.storm [disruptor :as disruptor] [cluster :as cluster]])
+  (:require [org.apache.storm [disruptor :as disruptor] [cluster :as cluster]
+             [custom-monitor :as custom-monitor]])
   (:require [clojure.set :as set])
   (:require [org.apache.storm.messaging.loader :as msg-loader])
   (:import [java.util.concurrent Executors]
@@ -792,7 +793,7 @@
   (fn [] (exit-process! 1 "Worker died")))
 
 (defn -main [storm-id assignment-id port-str worker-id]
-  (org.apache.storm.custom-monitor/test-log)
+  (custom-monitor/test-log)
   (let [conf (read-storm-config)]
     (setup-default-uncaught-exception-handler)
     (validate-distributed-mode! conf)

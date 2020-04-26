@@ -53,7 +53,8 @@
   (:use [org.apache.storm util config log timer zookeeper local-state])
   (:require [org.apache.storm [cluster :as cluster]
                             [converter :as converter]
-                            [stats :as stats]])
+                            [stats :as stats]
+                            [custom-monitor :as custom-monitor]])
   (:require [org.apache.storm.ui.core :as ui])
   (:require [clojure.set :as set])
   (:import [org.apache.storm.zookeeper AclEnforcement])
@@ -2608,6 +2609,6 @@
     ))
 
 (defn -main []
-  (org.apache.storm.custom-monitor/test-log)
+  (custom-monitor/test-log)
   (setup-default-uncaught-exception-handler)
   (-launch (standalone-nimbus)))

@@ -31,7 +31,8 @@
   (:import [com.codahale.metrics Meter Counter])
   (:require [org.apache.storm
              [thrift :as thrift]
-             [stats :as stats]])
+             [stats :as stats]
+             [custom-monitor :as custom-monitor]])
   (:require [org.apache.storm.daemon.builtin-metrics :as builtin-metrics]))
 
 (defn mk-topology-context-builder [worker executor-data topology]
@@ -169,7 +170,7 @@
     ))
 
 (defn mk-task-data [executor-data task-id]
-  (org.apache.storm.custom-monitor/test-log)
+  (custom-monitor/test-log)
   (recursive-map
     :executor-data executor-data
     :task-id task-id
