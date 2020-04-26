@@ -23,9 +23,9 @@
     <property name="patternMetrics">%d %-8r %m%n</property>
 </properties>
 <appenders>
-    <RollingFile name="custom-monitor" immediateFlush="false"
-                 fileName="${sys:storm.log.dir}/custom-monitor-worker.log"
-                 filePattern="${sys:storm.log.dir}/custom-monitor.%i.gz">
+    <RollingFile name="custom-monitor-worker" immediateFlush="false"
+                 fileName="${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/custom-monitor-worker.log"
+                 filePattern="${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/custom-monitor-worker.%i.gz">
         <PatternLayout>
             <pattern>${pattern}</pattern>
         </PatternLayout>
@@ -96,7 +96,7 @@
         <appender-ref ref="syslog"/>
     </Logger>
     <Logger name="org.apache.storm.custom-monitor" level="info" additivity="false">
-        <appender-ref ref="custom-monitor"/>
+        <appender-ref ref="custom-monitor-worker"/>
     </Logger>
     <Logger name="STDOUT" level="INFO">
         <appender-ref ref="STDOUT"/>
