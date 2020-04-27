@@ -301,6 +301,7 @@ storm.cluster.metrics.consumer.publish.interval.secs: 60
 
 # custom-monitor args
 custommonitor.enable: true
+custommonitor.poll.secs: 5
 
 
 # Metrics v2 configuration (optional)

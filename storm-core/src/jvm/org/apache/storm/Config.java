@@ -2362,6 +2362,9 @@ public class Config extends HashMap<String, Object> {
     @isBoolean
     public static final String CUSTOM_MONITOR_ENABLE = "custommonitor.enable";
 
+    @isInteger
+    public static final String CUSTOM_MONITOR_POLL_SECS = "custommonitor.poll.secs";
+
     public static void setClasspath(Map conf, String cp) {
         conf.put(Config.TOPOLOGY_CLASSPATH, cp);
     }
