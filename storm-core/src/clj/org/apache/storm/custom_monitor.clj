@@ -21,24 +21,31 @@
             :timer-name timer-name))
 
 
-(defn mk-custom-monitor-data [conf worker-id]
+(defn mk-custom-monitor-data [conf worker]
   (let [enabled? (conf CUSTOM-MONITOR-ENABLE)
         ]
     (recursive-map
-      :worker-id worker-id
+      :worker worker
       :enabled? enabled?
       :refresh-monitor-timer  (mk-halting-timer "refresh-monitor-timer"))))
 
 (defn mk-refresh-monitor [custom-monitor]
-  (let []
+  (let [
+        worker-transfer-queue (:transfer-queue (:worker custom-monitor))
+        queue-metrics (.getMetrics worker-transfer-queue)
+        queue-states (.getState queue-metrics)]
     (fn this
       ([]
        (this (fn [& ignored] (schedule (:refresh-monitor-timer custom-monitor) 0 this))))
       ([callback]
-       (println "refresh-monitor")))))
+       (log/info "refresh-monitor")
+       ; read transfer-queue in worker
+       (doseq [[key val] queue-states]
+         (log/info (str key ":" val)))
+       ))))
 
-(defn mk-custom-monitor [conf worker-id]
-  (let [custom-monitor (mk-custom-monitor-data conf worker-id)
+(defn mk-custom-monitor [conf worker]
+  (let [custom-monitor (mk-custom-monitor-data conf worker)
         refresh-monitor (mk-refresh-monitor custom-monitor)]
     (log/info "start refresh-monitor-timer with schedule-recurring")
     (schedule-recurring (:refresh-monitor-timer custom-monitor) 0 (conf CUSTOM-MONITOR-POLL-SECS) refresh-monitor)

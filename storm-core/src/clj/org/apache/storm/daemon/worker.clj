@@ -757,6 +757,9 @@
                                   (let [log-config (.topology-log-config (:storm-cluster-state worker) storm-id nil)]
                                     (process-log-config-change latest-log-config original-log-levels log-config)
                                     (establish-log-setting-callback)))]
+
+    ; initialize custom-monitor
+    (custom-monitor/mk-custom-monitor conf worker)
     (reset! original-log-levels (get-logger-levels))
     (log-message "Started with log levels: " @original-log-levels)
   
@@ -794,8 +797,6 @@
 
 (defn -main [storm-id assignment-id port-str worker-id]
   (let [conf (read-storm-config)]
-    ; initialize custom-monitor
-    (custom-monitor/mk-custom-monitor conf worker-id)
     (setup-default-uncaught-exception-handler)
     (validate-distributed-mode! conf)
     (let [worker (mk-worker conf nil storm-id assignment-id (Integer/parseInt port-str) worker-id)]
