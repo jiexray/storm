@@ -31,7 +31,7 @@
 
 (defn queue->states-str [queue]
   (let [queue-states (.getState (.getMetrics queue))]
-    (reduce (fn [acc [key val]] (clojure.string/join acc (str key ": " val "; "))) "" queue-states)
+    (reduce (fn [acc [key val]] (clojure.string/join [acc (str key ": " val "; ")])) "" queue-states)
     ))
 
 (defn mk-refresh-monitor [custom-monitor]
@@ -48,9 +48,9 @@
        (log/info (queue->states-str worker-transfer-queue))
        ;(doseq [[key val] queue-states]
        ;  (log/info (str key ":" val)))
-       (doseq [[short-executor receive-queue] executor-receive-queue-map]
-         (log/info (:executor-id short-executor) (queue->states-str receive-queue))
-         )
+       ;(doseq [[short-executor receive-queue] executor-receive-queue-map]
+       ;  (log/info (:executor-id short-executor) (queue->states-str receive-queue))
+       ;  )
        ))))
 
 (defn mk-custom-monitor [conf worker]
