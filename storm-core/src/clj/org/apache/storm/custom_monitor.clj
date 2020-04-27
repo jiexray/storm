@@ -29,19 +29,28 @@
       :enabled? enabled?
       :refresh-monitor-timer  (mk-halting-timer "refresh-monitor-timer"))))
 
+(defn queue->states-str [queue]
+  (let [queue-states (.getState (.getMetrics queue))]
+    (reduce (fn [acc [key val]] (clojure.string/join acc (str key ": " val "; "))) "" queue-states)
+    ))
+
 (defn mk-refresh-monitor [custom-monitor]
   (let [
-        worker-transfer-queue (:transfer-queue (:worker custom-monitor))
-        queue-metrics (.getMetrics worker-transfer-queue)
-        queue-states (.getState queue-metrics)]
+        worker (:worker custom-monitor)
+        worker-transfer-queue (:transfer-queue worker)
+        executor-receive-queue-map (:short-executor-receive-queue-map worker)]
     (fn this
       ([]
        (this (fn [& ignored] (schedule (:refresh-monitor-timer custom-monitor) 0 this))))
       ([callback]
        (log/info "refresh-monitor")
        ; read transfer-queue in worker
-       (doseq [[key val] queue-states]
-         (log/info (str key ":" val)))
+       (log/info (queue->states-str worker-transfer-queue))
+       ;(doseq [[key val] queue-states]
+       ;  (log/info (str key ":" val)))
+       (doseq [[short-executor receive-queue] executor-receive-queue-map]
+         (log/info (:executor-id short-executor) (queue->states-str receive-queue))
+         )
        ))))
 
 (defn mk-custom-monitor [conf worker]
