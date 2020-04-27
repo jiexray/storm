@@ -2359,6 +2359,9 @@ public class Config extends HashMap<String, Object> {
     @isInteger
     public static final String STORM_WORKER_DISRUPTOR_FLUSHER_MAX_POOL_SIZE = "storm.worker.disruptor.flusher.max.pool.size";
 
+    @isBoolean
+    public static final String CUSTOM_MONITOR_ENABLE = "custommonitor.enable";
+
     public static void setClasspath(Map conf, String cp) {
         conf.put(Config.TOPOLOGY_CLASSPATH, cp);
     }

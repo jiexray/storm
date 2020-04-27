@@ -2609,6 +2609,5 @@
     ))
 
 (defn -main []
-  (custom-monitor/test-log)
   (setup-default-uncaught-exception-handler)
   (-launch (standalone-nimbus)))

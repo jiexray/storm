@@ -335,4 +335,3 @@
                     (concat
                       (topology-conf LOGS-GROUPS)
                       (topology-conf TOPOLOGY-GROUPS))))))
-

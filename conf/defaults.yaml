@@ -299,6 +299,9 @@ storm.daemon.metrics.reporter.plugins:
 # configuration of cluster metrics consumer
 storm.cluster.metrics.consumer.publish.interval.secs: 60
 
+# custom-monitor args
+custommonitor.enable: true
+
 
 # Metrics v2 configuration (optional)
 #storm.metrics.reporters:

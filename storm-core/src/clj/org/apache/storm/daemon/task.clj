@@ -170,7 +170,6 @@
     ))
 
 (defn mk-task-data [executor-data task-id]
-  (custom-monitor/test-log)
   (recursive-map
     :executor-data executor-data
     :task-id task-id
