@@ -656,7 +656,7 @@
         _ (activate-worker-when-all-connections-ready worker)
 
         _ (refresh-storm-active worker nil)
-        
+
         _ (deserialize-worker-hooks worker)
 
         _ (run-worker-start-hooks worker)
@@ -664,8 +664,8 @@
         _ (reset! executors (dofor [e (:executors worker)] (executor/mk-executor worker e initial-credentials)))
 
         transfer-tuples (mk-transfer-tuples-handler worker)
-        
-        transfer-thread (disruptor/consume-loop* (:transfer-queue worker) transfer-tuples)               
+
+        transfer-thread (disruptor/consume-loop* (:transfer-queue worker) transfer-tuples)
 
         disruptor-handler (mk-disruptor-backpressure-handler worker)
         _ (.registerBackpressureCallback (:transfer-queue worker) disruptor-handler)
@@ -674,7 +674,7 @@
               (.setEnableBackpressure ((:storm-conf worker) TOPOLOGY-BACKPRESSURE-ENABLE)))
         backpressure-handler (mk-backpressure-handler @executors storm-conf)
         backpressure-thread (WorkerBackpressureThread. (:backpressure-trigger worker) worker backpressure-handler)
-        _ (if ((:storm-conf worker) TOPOLOGY-BACKPRESSURE-ENABLE) 
+        _ (if ((:storm-conf worker) TOPOLOGY-BACKPRESSURE-ENABLE)
             (.start backpressure-thread))
         ;; this callback is registered as a zk watch on topology's backpressure directory
         ;; which makes sure that the topology's backpressure status is updated to the worker's throttle-on
@@ -759,7 +759,8 @@
                                     (establish-log-setting-callback)))]
 
     ; initialize custom-monitor
-    (custom-monitor/mk-custom-monitor conf worker)
+    (when (conf CUSTOM-MONITOR-ENABLE)
+      (custom-monitor/mk-custom-monitor conf worker))
     (reset! original-log-levels (get-logger-levels))
     (log-message "Started with log levels: " @original-log-levels)
   
